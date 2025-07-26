@@ -106,6 +106,7 @@ def show_main_window(username):
             messagebox.showwarning("Input Error", "Please enter a question.")
             return
 
+
         status_text.set("Thinking...")
         main_root.update()
         answer = answer_question(q)

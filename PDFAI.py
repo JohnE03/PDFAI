@@ -7,7 +7,7 @@ import numpy as np
 import pickle
 
 # Load model
-embedder = SentenceTransformer("models/all-MiniLM-L6-v2")
+embedder = SentenceTransformer("models/distiluse-base-multilingual-cased-v2")
 
 # Step 1: Extract text from PDFs
 def extract_texts(folder_path):
@@ -19,6 +19,7 @@ def extract_texts(folder_path):
             text = ""
             for page in doc:
                 text += page.get_text()
+            print("[DEBUG] Sample Arabic text:\n", text[:500])
             all_docs.append({"filename": file, "content": text})
     return all_docs
 

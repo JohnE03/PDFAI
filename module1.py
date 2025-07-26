@@ -4,9 +4,10 @@ import os
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import requests
+from langdetect import detect
 
 # Load embedder once
-embedder = SentenceTransformer("models/all-MiniLM-L6-v2")
+embedder = SentenceTransformer("models/distiluse-base-multilingual-cased-v2")
 
 # These will be set after loading the index
 index = None
@@ -57,7 +58,21 @@ def answer_question(question):
     context = "\n\n".join([f"[{fname}]\n{text}" for fname, text in results])
     top_file = results[0][0] if results else "Unknown"
 
-    prompt = f"""You are a helpful assistant. Use the context below to answer the question.
+    try:
+        lang = detect(question)
+    except:
+        lang = "unknown"
+
+    if lang == "ar":
+        prompt = f"""أنت مساعد ذكي. استخدم السياق التالي للإجابة على السؤال بدقة وباللغة العربية.
+
+السياق:
+{context}
+
+السؤال: {question}
+الإجابة:"""
+    else:
+        prompt = f"""You are a helpful assistant. Use the context below to answer the question.
 
 Context:
 {context}
